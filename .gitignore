@@ -20,6 +20,7 @@ outputs/
 # ESP32 / PlatformIO / ESP-IDF 构建产物
 .pio/
 build/
+sdkconfig
 sdkconfig.old
 managed_components/
 dependencies.lock
