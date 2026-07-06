@@ -1,0 +1,30 @@
+# 密钥/配置（绝不入库）
+.env
+*.key
+secrets.*
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# 音频/图片等产物
+outputs/
+*.mp3
+*.wav
+*.pcm
+
+# ESP32 / PlatformIO / ESP-IDF 构建产物
+.pio/
+build/
+sdkconfig.old
+managed_components/
+dependencies.lock
+
+# 编辑器/系统
+.DS_Store
+.vscode/
+*.swp
