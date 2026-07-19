@@ -11,6 +11,9 @@ __pycache__/
 venv/
 .pytest_cache/
 
+# 厂商原始资料：仅在本机保留，整个目录不入库
+/ai_esp_assert/
+
 # 音频/图片等产物
 outputs/
 *.mp3
@@ -20,10 +23,14 @@ outputs/
 # ESP32 / PlatformIO / ESP-IDF 构建产物
 .pio/
 build/
+*-merged.bin
 sdkconfig
 sdkconfig.old
 managed_components/
 dependencies.lock
+
+# 旧版单眼生成资源；当前 demo 使用独立的左右眼头文件
+/eye_demo/main/anime_eye_rgb565.h
 
 # 编辑器/系统
 .DS_Store

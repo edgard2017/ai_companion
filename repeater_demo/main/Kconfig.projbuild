@@ -1,0 +1,20 @@
+menu "Zhengchen repeater demo"
+
+    config REPEATER_SERVER_URL
+        string "Default Mac /repeat URL"
+        default "http://ai-companion-mac.local:8765/repeat"
+        help
+            This is prefilled on the setup page. Bonjour avoids changing the
+            ESP configuration when the Mac gets a different LAN IP.
+
+    config REPEATER_RECORD_SECONDS
+        int "Maximum recording length in seconds"
+        range 2 20
+        default 8
+
+    config REPEATER_SPEAKER_VOLUME
+        int "Speaker volume"
+        range 1 100
+        default 75
+
+endmenu
