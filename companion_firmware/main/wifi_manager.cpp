@@ -43,6 +43,9 @@ char active_server_base_url[sizeof(DeviceConfig::server_url)] =
 void WifiEventHandler(void*, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
+        auto* event = static_cast<wifi_event_sta_disconnected_t*>(event_data);
+        ESP_LOGW(kTag, "Disconnected from '%.*s', reason=%d",
+                 event->ssid_len, event->ssid, event->reason);
         xEventGroupClearBits(event_group, kConnected);
         if (reconnect_enabled.load(std::memory_order_relaxed)) {
             esp_wifi_connect();
@@ -270,7 +273,8 @@ esp_err_t SetupPageHandler(httpd_req_t* request)
         "small{color:#666}</style></head><body><h2>AI Companion 配网</h2>"
         "<p>填写家里的 Wi-Fi，一次保存，以后开机会自动连接。</p>"
         "<form method='post' action='/save'>"
-        "<label>Wi-Fi 名称<input name='ssid' maxlength='32' required></label>"
+        "<label>Wi-Fi 名称<input name='ssid' maxlength='32' required "
+        "autocapitalize='off' autocorrect='off' spellcheck='false'></label>"
         "<label>Wi-Fi 密码<input name='password' type='password' maxlength='64'></label>"
         "<label>Mac AI Companion 服务根地址"
         "<input name='server_base_url' maxlength='255' value='"
@@ -295,7 +299,8 @@ esp_err_t SavePageHandler(httpd_req_t* request)
     if (request->content_len <= 0 || request->content_len >= 2048) {
         return httpd_resp_send_err(request, HTTPD_400_BAD_REQUEST, "Invalid form size");
     }
-    char body[2048];
+    // 放到静态区，避免 2KB 缓冲占用 httpd 任务栈导致栈溢出崩溃（会丢失保存）。
+    static char body[2048];
     size_t received = 0;
     while (received < static_cast<size_t>(request->content_len)) {
         int result = httpd_req_recv(
@@ -352,6 +357,7 @@ void StartSetupPortal()
     ESP_ERROR_CHECK(esp_wifi_start());
 
     httpd_config_t server_config = HTTPD_DEFAULT_CONFIG();
+    server_config.stack_size = 8192;  // 默认 4096 太小，/save 处理表单时会栈溢出
     httpd_handle_t server = nullptr;
     ESP_ERROR_CHECK(httpd_start(&server, &server_config));
     httpd_uri_t root = {};
