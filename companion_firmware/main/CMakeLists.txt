@@ -1,0 +1,24 @@
+idf_component_register(
+    SRCS
+        "board_audio.cpp"
+        "companion_main.cpp"
+        "eye_display.cpp"
+        "server_client.cpp"
+        "wifi_manager.cpp"
+    INCLUDE_DIRS "."
+    REQUIRES
+        esp_codec_dev
+        esp_driver_gpio
+        esp_driver_i2c
+        esp_driver_i2s
+        esp_driver_spi
+        esp_event
+        esp_http_client
+        esp_http_server
+        esp_lcd
+        esp_netif
+        esp_timer
+        esp_wifi
+        json
+        nvs_flash
+)

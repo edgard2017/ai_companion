@@ -1,0 +1,28 @@
+CONFIG_ESPTOOLPY_FLASHMODE_DIO=y
+CONFIG_ESPTOOLPY_FLASHFREQ_40M=y
+CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
+CONFIG_ESP_CONSOLE_SECONDARY_USB_SERIAL_JTAG=y
+
+# The animated RGB565 eye is compiled into the application. Reserve a 4 MB
+# factory partition instead of ESP-IDF's 1 MB single-app default.
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# The central C++ state machine nests HTTP/cJSON work with dictation state and
+# audio frame buffers. Give app_main enough headroom beyond IDF's 3.5 KB default.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=12288
+
+# The Zhengchen EYE board has 16 MB octal PSRAM. Audio request/response
+# buffers and the LCD frame buffer are allocated there.
+CONFIG_SPIRAM=y
+CONFIG_SPIRAM_MODE_OCT=y
+CONFIG_SPIRAM_SPEED_80M=y
+CONFIG_SPIRAM_USE_MALLOC=y
+CONFIG_SPIRAM_MALLOC_ALWAYSINTERNAL=512
+CONFIG_SPIRAM_MALLOC_RESERVE_INTERNAL=65536
+
+# Resolve the configured Mac .local name without pinning its LAN IP.
+CONFIG_LWIP_DNS_SUPPORT_MDNS_QUERIES=y
+
+CONFIG_CODEC_ES8311_SUPPORT=y
+CONFIG_CODEC_ES7210_SUPPORT=y

@@ -1,0 +1,91 @@
+menu "AI Companion firmware"
+
+    config COMPANION_SERVER_BASE_URL
+        string "Default Mac service base URL"
+        default "http://xiaolonzdeMacBook-Pro.local:8765"
+        help
+            This address is prefilled in the Wi-Fi setup page. Bonjour/mDNS
+            keeps it stable when this Mac receives a different LAN IP address.
+            Enter the service root only, without /repeat or /voice-chat.
+
+    config COMPANION_API_TOKEN
+        string "Optional server API token"
+        default ""
+        help
+            When non-empty, requests include this value as a Bearer token.
+            Leave it empty for the convenient trusted-home-network setup.
+
+    config COMPANION_CHAT_RECORD_SECONDS
+        int "Maximum chat recording length in seconds"
+        range 2 20
+        default 8
+
+    config COMPANION_SPEAKER_VOLUME
+        int "Speaker volume"
+        range 1 100
+        default 75
+
+    menu "Dictation defaults"
+
+        config COMPANION_DICTATION_UNIT_ID
+            string "Default knowledge unit ID"
+            default "pep-cn-g3-s1:u1"
+
+        config COMPANION_DICTATION_MODE
+            string "Default dictation mode"
+            default "chinese_word"
+
+        config COMPANION_DICTATION_COUNT
+            int "Default number of dictation items"
+            range 1 100
+            default 10
+
+        config COMPANION_DICTATION_WAIT_SECONDS
+            int "Seconds before automatically advancing"
+            range 3 60
+            default 10
+
+        config COMPANION_COMMAND_MAX_SECONDS
+            int "Maximum spoken-command recording length in seconds"
+            range 1 8
+            default 3
+
+    endmenu
+
+    menu "Voice activity detection"
+
+        config COMPANION_VAD_ENERGY_THRESHOLD
+            int "Average absolute PCM energy threshold"
+            range 100 20000
+            default 900
+            help
+                A frame whose mean absolute PCM16 amplitude reaches this
+                value is treated as speech. Raise it in a noisy room.
+
+        config COMPANION_VAD_END_SILENCE_MS
+            int "Silence needed to finish a command (ms)"
+            range 200 2000
+            default 650
+
+        config COMPANION_VAD_PRE_ROLL_MS
+            int "Audio retained before speech begins (ms)"
+            range 0 1000
+            default 200
+
+    endmenu
+
+    menu "BOOT button timing"
+
+        config COMPANION_BUTTON_DEBOUNCE_MS
+            int "Debounce duration (ms)"
+            range 10 100
+            default 30
+
+        config COMPANION_BUTTON_CHAT_HOLD_MS
+            int "Hold duration that starts chat recording (ms)"
+            range 200 1500
+            default 350
+
+    endmenu
+
+endmenu
