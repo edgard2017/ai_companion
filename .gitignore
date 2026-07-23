@@ -36,3 +36,7 @@ dependencies.lock
 .DS_Store
 .vscode/
 *.swp
+
+# 散落在源码目录的合并固件产物（不入库）
+*-merged*.bin
+*-FIXED.bin
